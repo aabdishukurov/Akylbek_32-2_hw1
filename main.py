@@ -11,7 +11,6 @@ async def onstart_up(_):
 
 start.register_start_handlers(dp)
 
-
 if __name__ == "__main__":
     executor.start_polling(dp,
                            skip_updates=True,
