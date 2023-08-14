@@ -3,9 +3,6 @@ import datetime
 from config import bot
 from aiogram import types, Dispatcher
 
-from const import START_MENU_TEXT
-from database import sql_commands
-
 
 async def echo_ban(message: types.Message):
     ban_words = ["damn", "fuck", "bitch"]

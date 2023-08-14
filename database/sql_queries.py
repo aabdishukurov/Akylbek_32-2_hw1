@@ -4,11 +4,8 @@ CREATE_USER_TABLE_QUERY = """
         TELEGRAM_ID INTEGER,
         USERNAME CHAR(50),
         FIRST_NAME CHAR(50),
-        LAST_NAME CHAR(50),
-        UNIQUE (TELEGRAM_ID)
+        LAST_NAME CHAR(50)
         )
 """
 
-START_INSERT_USER_QUERY = """INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)"""
-
-START_INSERT_USER_QUERY = """sELECT * FROM telegram_users"""
+START_INSERT_USER_QUERY = """INSERT INTO telegram_users VALUES (?,?,?,?,?)"""
