@@ -24,3 +24,13 @@ class Database:
                              last_name)
                             )
         self.connection.commit()
+
+    def sql_admin_select_user_command(self):
+        self.cursor.row_factory = lambda cursor, row:{
+            "telegram_id": row[1],
+            "username": row[2],
+            "first_name": row[3]
+        }
+        return self.cursor.execute(
+            sql_queries.SELECT_USER_QUERY
+        )

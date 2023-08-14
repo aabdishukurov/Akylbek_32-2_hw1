@@ -10,3 +10,5 @@ CREATE_USER_TABLE_QUERY = """
 """
 
 START_INSERT_USER_QUERY = """INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)"""
+
+START_INSERT_USER_QUERY = """sELECT * FROM telegram_users"""
