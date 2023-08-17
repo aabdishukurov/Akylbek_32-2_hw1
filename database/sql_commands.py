@@ -24,3 +24,30 @@ class Database:
                              last_name)
                             )
         self.connection.commit()
+
+    def sql_insert_user_form_command(self, telegram_id, nickname,
+                                     age, bio, married, photo):
+        self.cursor.execute(sql_queries.INSERT_USER_FORM_QUERY,
+                            (None,
+                             telegram_id,
+                             nickname,
+                             age,
+                             bio,
+                             married,
+                             photo)
+                            )
+        self.connection.commit()
+
+    def sql_select_user_form_by_telegram_id_command(self, telegram_id):
+        self.cursor.row_factory = lambda cursor, row: {
+            "id": row[0],
+            "telegram_id": row[1],
+            "nickname": row[2],
+            "age": row[3],
+            "bio": row[4],
+            "married": row[5],
+            "photo": row[6]
+        }
+        return self.cursor.execute(
+            sql_queries.SELECT_USER_FORM_BY_TELEGRAM_ID_QUERY, (telegram_id,)
+        ).fetchall()
