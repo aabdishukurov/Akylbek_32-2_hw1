@@ -8,7 +8,6 @@ CREATE_USER_TABLE_QUERY = """
         )
 """
 
-START_INSERT_USER_QUERY = """INSERT INTO telegram_users VALUES (?,?,?,?,?)"""
 
 CREATE_USER_FORM_TABLE_QUERY = """
         CREATE TABLE IF NOT EXISTS user_form
@@ -23,7 +22,8 @@ CREATE_USER_FORM_TABLE_QUERY = """
         )
 """
 
-START_INSERT_USER_QUERY = """INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)"""
+
+START_INSERT_USER_QUERY = """INSERT INTO telegram_users VALUES (?,?,?,?,?)"""
 
 SELECT_USER_QUERY = """SELECT * FROM telegram_users"""
 

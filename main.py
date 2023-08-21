@@ -1,6 +1,6 @@
 from aiogram.utils import executor
 from config import dp
-from handlers import start, chat_actions, fsm
+from handlers import start, chat_actions
 from database import sql_commands
 
 async def onstart_up(_):
@@ -9,7 +9,6 @@ async def onstart_up(_):
 
 
 start.register_start_handlers(dp)
-fsm.register_fsm_form_handlers(dp)
 chat_actions.register_chat_actions_handlers(dp)
 
 
