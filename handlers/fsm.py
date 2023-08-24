@@ -5,7 +5,7 @@ from config import bot
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from database.sql_commands import Database
-from keyboard.fsm_key import select_my_profile_keyboard
+from keyboards.fsm_keyboard import select_my_profile_keyboard
 
 
 class FormStates(StatesGroup):
@@ -16,8 +16,8 @@ class FormStates(StatesGroup):
     photo = State()
 
 
-async def fsm_start(message: types.Message):
-    await message.reply("Отправь мне свой новый никнейм")
+async def fsm_start(call: types.CallbackQuery):
+    await call.message.reply("Отправь мне свой новый никнейм")
     await FormStates.nickname.set()
 
 
@@ -75,21 +75,38 @@ async def load_photo(message: types.Message,
         destination_dir="/Users/adiletsaparbek/PycharmProjects/geek_32_2/media"
     )
     async with state.proxy() as data:
-        Database().sql_insert_user_form_command(
-            telegram_id=message.from_user.id,
-            nickname=data['nickname'],
-            age=data['age'],
-            bio=data['bio'],
-            married=data['married'],
-            photo=path.name,
-        )
-        await message.reply("Вы успешно зарегистрировали свое анкету\n"
-                            "Можете просмотреть свою анкету нажав на кнопку мой профиль",
-                            reply_markup=await select_my_profile_keyboard())
+
+        form_existed = Database().sql_select_user_form_by_telegram_id_command(
+            message.from_user.id)
+        if form_existed:
+            Database().sql_update_user_form_command(
+                nickname=data['nickname'],
+                age=data['age'],
+                bio=data['bio'],
+                married=data['married'],
+                photo=path.name,
+                telegram_id=message.from_user.id,
+            )
+            await message.reply("Вы успешно обновили свою анкету\n"
+                                "Можете просмотреть свою анкету нажав на кнопку мой профиль",
+                                reply_markup=await select_my_profile_keyboard())
+        else:
+            Database().sql_insert_user_form_command(
+                telegram_id=message.from_user.id,
+                nickname=data['nickname'],
+                age=data['age'],
+                bio=data['bio'],
+                married=data['married'],
+                photo=path.name,
+            )
+            await message.reply("Вы успешно зарегистрировали свою анкету\n"
+                                "Можете просмотреть свою анкету нажав на кнопку мой профиль",
+                                reply_markup=await select_my_profile_keyboard())
+    await state.finish()
 
 
 def register_fsm_form_handlers(dp: Dispatcher):
-    dp.register_message_handler(fsm_start, commands=["signup"])
+    dp.register_callback_query_handler(fsm_start, lambda call: call.data == "signup")
     dp.register_message_handler(load_nickname,
                                 state=FormStates.nickname,
                                 content_types=['text'])
